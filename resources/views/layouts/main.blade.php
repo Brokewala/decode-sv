@@ -21,6 +21,9 @@
     
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('favicon.ico') }}">
+    
+    <!-- Script pour le mode sombre -->
+    <script src="{{ asset('js/theme-switcher.js') }}"></script>
 </head>
 <body class="bg-gray-50 dark:bg-github-bg text-gray-900 dark:text-github-text min-h-screen flex flex-col font-sans antialiased">
     <!-- Header -->

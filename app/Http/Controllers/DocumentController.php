@@ -261,20 +261,31 @@ class DocumentController extends Controller
         try {
             // Pour les PDF, créer une image de prévisualisation de la première page
             if (strtolower($format) === 'pdf') {
-                $manager = new ImageManager();
-                $previewImage = $manager->read($file->path());
-                $previewImage->scaleDown(800);
+                // Utiliser \Intervention\Image\ImageManager qui est l'API 2.x
+                $manager = new \Intervention\Image\ImageManager(['driver' => 'gd']);
+                $image = $manager->make($file->path());
+                $image->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
                 
                 $previewPath = 'documents/previews/' . uniqid() . '.jpg';
-                Storage::disk('public')->put($previewPath, $previewImage->toJpeg());
+                Storage::disk('public')->put($previewPath, (string) $image->encode('jpg'));
             }
             // Pour les autres formats, utiliser une image générique
             else {
-                // Utiliser une image générique basée sur le format
-                $previewPath = 'documents/previews/generic-' . strtolower($format) . '.jpg';
+                // Vérifier si l'image générique existe
+                $genericPath = 'documents/previews/generic-' . strtolower($format) . '.jpg';
+                if (Storage::disk('public')->exists($genericPath)) {
+                    $previewPath = $genericPath;
+                } else {
+                    // Utiliser une image générique par défaut
+                    $previewPath = 'documents/previews/generic.jpg';
+                }
             }
         } catch (\Exception $e) {
             // En cas d'erreur, utiliser une image générique
+            \Log::error('Erreur lors de la création de la prévisualisation: ' . $e->getMessage());
             $previewPath = 'documents/previews/generic.jpg';
         }
         
