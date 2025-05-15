@@ -1,0 +1,30 @@
+/* Amélioration du contraste en mode clair */
+body:not(.dark) .text-gray-500 {
+    color: #4B5563 !important; /* text-gray-600 */
+}
+
+body:not(.dark) .text-gray-400 {
+    color: #6B7280 !important; /* text-gray-500 */
+}
+
+body:not(.dark) .text-gray-300 {
+    color: #6B7280 !important; /* text-gray-500 */
+}
+
+body:not(.dark) .text-gray-200 {
+    color: #374151 !important; /* text-gray-700 */
+}
+
+/* Amélioration du contraste pour les formulaires en mode clair */
+body:not(.dark) input::placeholder,
+body:not(.dark) textarea::placeholder {
+    color: #6B7280 !important; /* text-gray-500 */
+    opacity: 1; /* Firefox */
+}
+
+/* Fixer les problèmes de contraste sur le texte gris clair */
+.text-gray-200, .text-gray-300, .text-gray-400 {
+    @media (prefers-color-scheme: light) {
+        color: #4B5563;
+    }
+}

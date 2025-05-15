@@ -24,8 +24,11 @@
     
     <!-- Script pour le mode sombre -->
     <script src="{{ asset('js/theme-switcher.js') }}"></script>
+    
+    <!-- Fix pour le contraste en mode clair -->
+    <link rel="stylesheet" href="{{ asset('css/fix-contrast.css') }}">
 </head>
-<body class="bg-gray-50 dark:bg-github-bg text-gray-900 dark:text-github-text min-h-screen flex flex-col font-sans antialiased">
+<body class="bg-gray-50 dark:bg-github-bg text-gray-800 dark:text-github-text min-h-screen flex flex-col font-sans antialiased">
     <!-- Header -->
     <header class="bg-white dark:bg-github-header border-b border-gray-200 dark:border-github-border sticky top-0 z-10">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">

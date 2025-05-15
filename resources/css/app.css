@@ -20,6 +20,10 @@
     --color-primary-800: #075985;
     --color-primary-900: #0c4a6e;
     --color-primary-950: #082f49;
+    
+    /* Amélioration du contraste en mode clair */
+    --color-text-light: #374151; /* text-gray-700 */
+    --color-text-lighter: #4B5563; /* text-gray-600 */
 }
 
 @layer components {

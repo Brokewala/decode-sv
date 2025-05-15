@@ -23,9 +23,8 @@ Route::get('/contact', function() {
     return view('contact');
 })->name('contact');
 
-// Routes Documents
+// Routes Documents (attention à l'ordre des routes)
 Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
-Route::get('/documents/{document}', [DocumentController::class, 'show'])->name('documents.show');
 
 // Routes authentifiées
 Route::middleware(['auth'])->group(function () {
@@ -45,6 +44,9 @@ Route::middleware(['auth'])->group(function () {
     // Notation des documents
     Route::post('/documents/{document}/rate', [DocumentController::class, 'rate'])->name('documents.rate');
 });
+
+// La route show doit être placée après create pour éviter le conflit
+Route::get('/documents/{document}', [DocumentController::class, 'show'])->name('documents.show');
 
 // Authentification
 Route::get('/login', function() {
