@@ -17,9 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Pages publiques
-Route::get('/', function() {
-    return view('home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/contact', function() {
     return view('contact');

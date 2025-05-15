@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Document;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,20 @@ use Illuminate\Validation\Rules;
 
 class HomeController extends Controller
 {
+    /**
+     * Display the home page.
+     */
+    public function index()
+    {
+        // Récupère les derniers documents ajoutés (validés uniquement)
+        $latestDocuments = Document::where('is_verified', true)
+                                  ->orderBy('created_at', 'desc')
+                                  ->take(4)
+                                  ->get();
+        
+        return view('home', compact('latestDocuments'));
+    }
+
     /**
      * Handle user login.
      */
@@ -46,12 +61,12 @@ class HomeController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'points' => 0, // Les nouveaux utilisateurs commencent avec 0 point
+            'points' => 5, // Nouveaux utilisateurs commencent avec 5 points pour tester la plateforme
         ]);
 
         Auth::login($user);
 
-        return redirect(route('home'))->with('success', 'Inscription réussie');
+        return redirect(route('home'))->with('success', 'Inscription réussie! Vous avez reçu 5 points de bienvenue.');
     }
 
     /**
