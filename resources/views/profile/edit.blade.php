@@ -8,8 +8,8 @@
     
     <div class="max-w-3xl mx-auto">
         <!-- Informations du profil -->
-        <div class="bg-white dark:bg-github-secondary rounded-lg shadow-md dark:shadow-lg border border-gray-200 dark:border-github-border overflow-hidden mb-6">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-github-border">
+        <div class="bg-white dark:bg-dark-surface rounded-lg shadow-md dark:shadow-lg border border-gray-200 dark:border-dark-border overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-dark-border">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-white">Informations du profil</h2>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Mettez à jour vos informations de compte et votre adresse email.
@@ -28,7 +28,7 @@
                         </label>
                         <div class="mt-1">
                             <input id="name" name="name" type="text" value="{{ old('name', $user->name) }}" required
-                                   class="block w-full rounded-md border-gray-300 dark:border-github-border shadow-sm focus:border-primary-500 dark:focus:border-github-accent focus:ring-primary-500 dark:focus:ring-github-accent dark:bg-github-bg dark:text-white sm:text-sm">
+                                   class="block w-full rounded-md border-gray-300 dark:border-dark-border shadow-sm focus:border-primary-500 dark:focus:border-dark-accent focus:ring-primary-500 dark:focus:ring-dark-accent dark:bg-dark-bg dark:text-white sm:text-sm">
                         </div>
                         @error('name')
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -42,7 +42,7 @@
                         </label>
                         <div class="mt-1">
                             <input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" required
-                                   class="block w-full rounded-md border-gray-300 dark:border-github-border shadow-sm focus:border-primary-500 dark:focus:border-github-accent focus:ring-primary-500 dark:focus:ring-github-accent dark:bg-github-bg dark:text-white sm:text-sm">
+                                   class="block w-full rounded-md border-gray-300 dark:border-dark-border shadow-sm focus:border-primary-500 dark:focus:border-dark-accent focus:ring-primary-500 dark:focus:ring-dark-accent dark:bg-dark-bg dark:text-white sm:text-sm">
                         </div>
                         @error('email')
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -50,7 +50,7 @@
                     </div>
                     
                     <div>
-                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 dark:bg-github-button hover:bg-primary-700 dark:hover:bg-github-buttonHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-github-accent dark:focus:ring-offset-github-bg">
+                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 dark:bg-dark-button hover:bg-primary-700 dark:hover:bg-dark-buttonHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-dark-accent dark:focus:ring-offset-dark-bg">
                             Enregistrer
                         </button>
                     </div>
@@ -59,8 +59,8 @@
         </div>
         
         <!-- Mise à jour du mot de passe -->
-        <div class="bg-white dark:bg-github-secondary rounded-lg shadow-md dark:shadow-lg border border-gray-200 dark:border-github-border overflow-hidden mb-6">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-github-border">
+        <div class="bg-white dark:bg-dark-surface rounded-lg shadow-md dark:shadow-lg border border-gray-200 dark:border-dark-border overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-dark-border">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-white">Mot de passe</h2>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Assurez-vous que votre compte utilise un mot de passe sécurisé.
@@ -79,7 +79,7 @@
                         </label>
                         <div class="mt-1">
                             <input id="current_password" name="current_password" type="password"
-                                   class="block w-full rounded-md border-gray-300 dark:border-github-border shadow-sm focus:border-primary-500 dark:focus:border-github-accent focus:ring-primary-500 dark:focus:ring-github-accent dark:bg-github-bg dark:text-white sm:text-sm">
+                                   class="block w-full rounded-md border-gray-300 dark:border-dark-border shadow-sm focus:border-primary-500 dark:focus:border-dark-accent focus:ring-primary-500 dark:focus:ring-dark-accent dark:bg-dark-bg dark:text-white sm:text-sm">
                         </div>
                         @error('current_password')
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -93,7 +93,7 @@
                         </label>
                         <div class="mt-1">
                             <input id="password" name="password" type="password"
-                                   class="block w-full rounded-md border-gray-300 dark:border-github-border shadow-sm focus:border-primary-500 dark:focus:border-github-accent focus:ring-primary-500 dark:focus:ring-github-accent dark:bg-github-bg dark:text-white sm:text-sm">
+                                   class="block w-full rounded-md border-gray-300 dark:border-dark-border shadow-sm focus:border-primary-500 dark:focus:border-dark-accent focus:ring-primary-500 dark:focus:ring-dark-accent dark:bg-dark-bg dark:text-white sm:text-sm">
                         </div>
                         @error('password')
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -107,12 +107,12 @@
                         </label>
                         <div class="mt-1">
                             <input id="password_confirmation" name="password_confirmation" type="password"
-                                   class="block w-full rounded-md border-gray-300 dark:border-github-border shadow-sm focus:border-primary-500 dark:focus:border-github-accent focus:ring-primary-500 dark:focus:ring-github-accent dark:bg-github-bg dark:text-white sm:text-sm">
+                                   class="block w-full rounded-md border-gray-300 dark:border-dark-border shadow-sm focus:border-primary-500 dark:focus:border-dark-accent focus:ring-primary-500 dark:focus:ring-dark-accent dark:bg-dark-bg dark:text-white sm:text-sm">
                         </div>
                     </div>
                     
                     <div>
-                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 dark:bg-github-button hover:bg-primary-700 dark:hover:bg-github-buttonHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-github-accent dark:focus:ring-offset-github-bg">
+                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 dark:bg-dark-button hover:bg-primary-700 dark:hover:bg-dark-buttonHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-dark-accent dark:focus:ring-offset-dark-bg">
                             Mettre à jour le mot de passe
                         </button>
                     </div>
@@ -121,8 +121,8 @@
         </div>
         
         <!-- Points -->
-        <div class="bg-white dark:bg-github-secondary rounded-lg shadow-md dark:shadow-lg border border-gray-200 dark:border-github-border overflow-hidden mb-6">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-github-border">
+        <div class="bg-white dark:bg-dark-surface rounded-lg shadow-md dark:shadow-lg border border-gray-200 dark:border-dark-border overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-dark-border">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-white">Mes points</h2>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Suivez votre solde de points et gagnez-en plus en partageant des documents.
@@ -133,7 +133,7 @@
                 <div class="mb-6">
                     <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Points actuels</h3>
                     <div class="mt-2 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-600 dark:text-github-accent mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-600 dark:text-dark-accent mr-2" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
                         </svg>
@@ -142,13 +142,13 @@
                 </div>
                 
                 <div class="space-y-2">
-                    <a href="{{ route('documents.create') }}" class="inline-flex items-center text-sm font-medium text-primary-600 dark:text-github-accent hover:text-primary-500 dark:hover:text-github-hover">
+                    <a href="{{ route('documents.create') }}" class="inline-flex items-center text-sm font-medium text-primary-600 dark:text-dark-accent hover:text-primary-500 dark:hover:text-dark-accentHover">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
                         </svg>
                         Déposer un document pour gagner des points
                     </a>
-                    <a href="{{ route('documents.index') }}" class="inline-flex items-center text-sm font-medium text-primary-600 dark:text-github-accent hover:text-primary-500 dark:hover:text-github-hover">
+                    <a href="{{ route('documents.index') }}" class="inline-flex items-center text-sm font-medium text-primary-600 dark:text-dark-accent hover:text-primary-500 dark:hover:text-dark-accentHover">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
                         </svg>

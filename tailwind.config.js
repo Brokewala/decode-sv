@@ -23,18 +23,23 @@ export default {
           900: '#0c4a6e',
           950: '#082f49',
         },
-        // GitHub inspired colors
-        github: {
-          bg: '#0d1117',
-          text: '#c9d1d9',
-          border: '#30363d',
-          button: '#238636',
-          buttonHover: '#2ea043',
-          accent: '#58a6ff',
-          secondary: '#21262d',
-          header: '#161b22',
-          hover: '#1f6feb',
-          warning: '#f85149',
+        // Thème professionnel dark et light
+        dark: {
+          bg: '#121212',
+          surface: '#1e1e1e',
+          border: '#2d2d2d',
+          divider: '#383838',
+          text: '#e2e2e2',
+          textSecondary: '#b3b3b3',
+          accent: '#0ea5e9',
+          accentHover: '#0284c7',
+          button: '#0ea5e9',
+          buttonHover: '#0284c7',
+          header: '#121212',
+          input: '#2d2d2d',
+          card: '#1e1e1e',
+          warning: '#e57373',
+          success: '#81c784',
         }
       },
       fontFamily: {

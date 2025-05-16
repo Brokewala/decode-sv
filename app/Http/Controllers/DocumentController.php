@@ -261,16 +261,18 @@ class DocumentController extends Controller
         try {
             // Pour les PDF, créer une image de prévisualisation de la première page
             if (strtolower($format) === 'pdf') {
-                // Utiliser \Intervention\Image\ImageManager qui est l'API 2.x
-                $manager = new \Intervention\Image\ImageManager(['driver' => 'gd']);
-                $image = $manager->make($file->path());
-                $image->resize(800, null, function ($constraint) {
+                // Utiliser Intervention\Image v3
+                $manager = new \Intervention\Image\ImageManager(
+                    new \Intervention\Image\Drivers\Gd\Driver()
+                );
+                $image = $manager->read($file->path());
+                $image = $image->resize(800, null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
                 
                 $previewPath = 'documents/previews/' . uniqid() . '.jpg';
-                Storage::disk('public')->put($previewPath, (string) $image->encode('jpg'));
+                Storage::disk('public')->put($previewPath, (string) $image->encodeByExtension('jpg'));
             }
             // Pour les autres formats, utiliser une image générique
             else {

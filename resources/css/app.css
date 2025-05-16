@@ -9,6 +9,7 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
         
+    /* Couleurs primaires */
     --color-primary-50: #f0f9ff;
     --color-primary-100: #e0f2fe;
     --color-primary-200: #bae6fd;
@@ -21,9 +22,28 @@
     --color-primary-900: #0c4a6e;
     --color-primary-950: #082f49;
     
-    /* Amélioration du contraste en mode clair */
-    --color-text-light: #374151; /* text-gray-700 */
-    --color-text-lighter: #4B5563; /* text-gray-600 */
+    /* Thème sombre professionnel */
+    --color-dark-bg: #121212;
+    --color-dark-surface: #1e1e1e;
+    --color-dark-border: #2d2d2d;
+    --color-dark-divider: #383838;
+    --color-dark-text: #e2e2e2;
+    --color-dark-text-secondary: #b3b3b3;
+    --color-dark-accent: #0ea5e9;
+    --color-dark-accent-hover: #0284c7;
+    --color-dark-button: #0ea5e9;
+    --color-dark-button-hover: #0284c7;
+    --color-dark-header: #121212;
+    --color-dark-input: #2d2d2d;
+    --color-dark-card: #1e1e1e;
+    
+    /* Thème clair professionnel */
+    --color-light-text: #333333;
+    --color-light-text-secondary: #555555;
+    --color-light-bg: #ffffff;
+    --color-light-surface: #f8f9fa;
+    --color-light-border: #e5e7eb;
+    --color-light-divider: #eaeaea;
 }
 
 @layer components {
