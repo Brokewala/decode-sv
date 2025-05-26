@@ -1,0 +1,182 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Documents en Attente de Validation') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- Messages de succès/erreur -->
+            @if (session('success'))
+                <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if (session('info'))
+                <div class="mb-4 bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded">
+                    {{ session('info') }}
+                </div>
+            @endif
+
+            <!-- Filtres -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6">
+                    <form method="GET" action="{{ route('admin.pending') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Recherche</label>
+                            <input type="text" name="search" id="search" value="{{ request('search') }}" 
+                                   placeholder="Titre, pays, description..." 
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        </div>
+
+                        <div>
+                            <label for="country" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Pays</label>
+                            <select name="country" id="country" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <option value="">Tous les pays</option>
+                                <!-- Options dynamiques ajoutées par JavaScript ou backend -->
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="format" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Format</label>
+                            <select name="format" id="format" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <option value="">Tous les formats</option>
+                                <option value="pdf" {{ request('format') == 'pdf' ? 'selected' : '' }}>PDF</option>
+                                <option value="doc" {{ request('format') == 'doc' ? 'selected' : '' }}>DOC/DOCX</option>
+                                <option value="xls" {{ request('format') == 'xls' ? 'selected' : '' }}>XLS/XLSX</option>
+                            </select>
+                        </div>
+
+                        <div class="flex items-end">
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Filtrer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Liste des documents -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6">
+                    @if($documents->count() > 0)
+                        <div class="space-y-6">
+                            @foreach($documents as $document)
+                                <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1">
+                                            <div class="flex items-center space-x-4 mb-4">
+                                                <!-- Prévisualisation -->
+                                                <div class="flex-shrink-0">
+                                                    @if($document->preview_path)
+                                                        <img src="{{ asset('storage/' . $document->preview_path) }}" 
+                                                             alt="Prévisualisation" 
+                                                             class="w-16 h-20 object-cover rounded border">
+                                                    @else
+                                                        <div class="w-16 h-20 bg-gray-200 dark:bg-gray-600 rounded border flex items-center justify-center">
+                                                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                                            </svg>
+                                                        </div>
+                                                    @endif
+                                                </div>
+
+                                                <!-- Informations du document -->
+                                                <div class="flex-1">
+                                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                                        {{ $document->title }}
+                                                    </h3>
+                                                    <div class="mt-2 space-y-1">
+                                                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                            <span class="font-medium">Auteur:</span> {{ $document->user->name }}
+                                                        </p>
+                                                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                            <span class="font-medium">Email:</span> {{ $document->user->email }}
+                                                        </p>
+                                                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                            <span class="font-medium">Pays:</span> {{ $document->country }}
+                                                        </p>
+                                                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                            <span class="font-medium">Format:</span> {{ strtoupper($document->format) }}
+                                                        </p>
+                                                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                            <span class="font-medium">Prix:</span> {{ $document->price }} point(s)
+                                                        </p>
+                                                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                            <span class="font-medium">Soumis le:</span> {{ $document->created_at->format('d/m/Y à H:i') }}
+                                                        </p>
+                                                    </div>
+                                                    
+                                                    @if($document->description)
+                                                        <div class="mt-3">
+                                                            <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Description:</p>
+                                                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ $document->description }}</p>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Actions -->
+                                        <div class="flex-shrink-0 ml-6">
+                                            <div class="flex space-x-3">
+                                                <!-- Bouton Valider -->
+                                                <form method="POST" action="{{ route('admin.verify', $document) }}" class="inline">
+                                                    @csrf
+                                                    <button type="submit" 
+                                                            onclick="return confirm('Êtes-vous sûr de vouloir valider ce document ? {{ $document->price }} point(s) seront attribués à {{ $document->user->name }}.')"
+                                                            class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm">
+                                                        ✅ Valider
+                                                    </button>
+                                                </form>
+
+                                                <!-- Bouton Rejeter -->
+                                                <form method="POST" action="{{ route('admin.reject', $document) }}" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" 
+                                                            onclick="return confirm('Êtes-vous sûr de vouloir rejeter et supprimer ce document ? Cette action est irréversible.')"
+                                                            class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm">
+                                                        ❌ Rejeter
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="mt-6">
+                            {{ $documents->links() }}
+                        </div>
+                    @else
+                        <div class="text-center py-12">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Aucun document en attente</h3>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                Tous les documents ont été traités ou aucun document n'a été soumis.
+                            </p>
+                            <div class="mt-6">
+                                <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Retour au dashboard
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>

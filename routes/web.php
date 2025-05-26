@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
@@ -65,3 +66,13 @@ Route::get('/register', function() {
 Route::post('/login', [HomeController::class, 'login'])->name('login.post');
 Route::post('/register', [HomeController::class, 'register'])->name('register.post');
 Route::post('/logout', [HomeController::class, 'logout'])->name('logout');
+
+// Routes d'administration
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/pending', [AdminController::class, 'pendingDocuments'])->name('admin.pending');
+    Route::post('/documents/{document}/verify', [AdminController::class, 'verifyDocument'])->name('admin.verify');
+    Route::delete('/documents/{document}/reject', [AdminController::class, 'rejectDocument'])->name('admin.reject');
+    Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::post('/users/{user}/toggle-admin', [AdminController::class, 'toggleAdmin'])->name('admin.toggle-admin');
+});

@@ -135,6 +135,13 @@ class DocumentController extends Controller
 
                 DB::commit();
 
+                // Log de succès pour le suivi
+                \Log::info('Document créé avec succès', [
+                    'document_id' => $document->id,
+                    'user_id' => Auth::id(),
+                    'title' => $document->title
+                ]);
+
                 return redirect()->route('documents.my')->with('success', 'Votre document a été soumis avec succès et est en attente de validation.');
 
             } catch (\Exception $e) {
@@ -287,6 +294,10 @@ class DocumentController extends Controller
      */
     private function createPreview($file, $format)
     {
+        // Augmenter temporairement la limite de temps pour le traitement d'image
+        $originalTimeLimit = ini_get('max_execution_time');
+        set_time_limit(config('timeout.image_processing', 60));
+
         $previewPath = null;
 
         try {
@@ -295,16 +306,31 @@ class DocumentController extends Controller
                 // Vérifier si Imagick est disponible pour les PDF
                 if (extension_loaded('imagick')) {
                     try {
-                        $imagick = new \Imagick();
-                        $imagick->readImage($file->path() . '[0]'); // Première page
-                        $imagick->setImageFormat('jpeg');
-                        $imagick->setImageCompressionQuality(80);
-                        $imagick->resizeImage(800, 0, \Imagick::FILTER_LANCZOS, 1);
+                        // Vérifier la taille du fichier avant traitement
+                        $fileSize = $file->getSize();
+                        if ($fileSize > 5242880) { // 5MB
+                            \Log::info('Fichier PDF trop volumineux pour preview: ' . $fileSize . ' bytes');
+                            $previewPath = $this->getGenericPreview($format);
+                        } else {
+                            $imagick = new \Imagick();
 
-                        $previewPath = 'documents/previews/' . uniqid() . '.jpg';
-                        Storage::disk('public')->put($previewPath, $imagick->getImageBlob());
-                        $imagick->clear();
-                        $imagick->destroy();
+                            // Configurer Imagick pour éviter les timeouts
+                            $imagick->setResourceLimit(\Imagick::RESOURCETYPE_MEMORY, 128 * 1024 * 1024); // 128MB
+                            $imagick->setResourceLimit(\Imagick::RESOURCETYPE_TIME, 30); // 30 secondes max
+
+                            $imagick->readImage($file->path() . '[0]'); // Première page seulement
+                            $imagick->setImageFormat('jpeg');
+                            $imagick->setImageCompressionQuality(75); // Réduire la qualité pour la vitesse
+
+                            // Redimensionner avec une taille plus petite pour la vitesse
+                            $imagick->resizeImage(400, 0, \Imagick::FILTER_LANCZOS, 1);
+
+                            $previewPath = 'documents/previews/' . uniqid() . '.jpg';
+                            Storage::disk('public')->put($previewPath, $imagick->getImageBlob());
+
+                            $imagick->clear();
+                            $imagick->destroy();
+                        }
                     } catch (\Exception $e) {
                         \Log::warning('Erreur Imagick pour PDF: ' . $e->getMessage());
                         $previewPath = $this->getGenericPreview($format);
@@ -322,6 +348,9 @@ class DocumentController extends Controller
             // En cas d'erreur, utiliser une image générique
             \Log::error('Erreur lors de la création de la prévisualisation: ' . $e->getMessage());
             $previewPath = $this->getGenericPreview($format);
+        } finally {
+            // Restaurer la limite de temps originale
+            set_time_limit($originalTimeLimit);
         }
 
         return $previewPath;

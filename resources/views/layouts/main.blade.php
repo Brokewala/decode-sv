@@ -40,15 +40,15 @@
                     </div>
                     <nav class="items-center hidden sm:ml-6 sm:flex sm:space-x-4">
                         <a href="{{ route('home') }}" class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('home') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">
-                        Home
+                        Accueil
                         </a>
                         <a href="{{ route('documents.index') }}" class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('documents.index') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">
 
-                        Catalog
+                        Catalogue
                         </a>
                         <a href="{{ route('documents.create') }}" class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('documents.create') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">
 
-                    Submit a document
+                        Soumettre un document
                         </a>
                     </nav>
                 </div>

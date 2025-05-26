@@ -15,7 +15,7 @@ class AdminController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin');
+        // Le middleware admin est appliqué dans les routes
     }
 
     /**
@@ -103,27 +103,35 @@ class AdminController extends Controller
     }
 
     /**
-     * Reject and delete a document.
+     * Reject a document and delete it from storage.
      */
     public function rejectDocument(Document $document)
     {
-        // Supprimer les fichiers
-        if (Storage::disk('private')->exists($document->file_path)) {
+        // Vérifier si le document est déjà validé
+        if ($document->is_verified) {
+            return back()->with('error', 'Impossible de rejeter un document déjà validé.');
+        }
+
+        // Supprimer les fichiers du stockage
+        if ($document->file_path && Storage::disk('private')->exists($document->file_path)) {
             Storage::disk('private')->delete($document->file_path);
         }
-        
+
         if ($document->preview_path && Storage::disk('public')->exists($document->preview_path)) {
             Storage::disk('public')->delete($document->preview_path);
         }
 
-        // Récupérer le nom de l'utilisateur avant suppression pour le message
+        // Sauvegarder les informations pour le message
+        $documentTitle = $document->title;
         $userName = $document->user->name;
 
-        // Supprimer le document
+        // Supprimer le document de la base de données
         $document->delete();
 
-        return back()->with('success', "Le document a été rejeté et supprimé. L'utilisateur {$userName} a été notifié.");
+        return back()->with('success', "Le document '{$documentTitle}' de {$userName} a été rejeté et supprimé.");
     }
+
+
 
     /**
      * Display a list of users.

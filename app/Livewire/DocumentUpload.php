@@ -43,6 +43,10 @@ class DocumentUpload extends Component
     public function submit()
     {
         try {
+            // Augmenter la limite de temps pour l'upload
+            $originalTimeLimit = ini_get('max_execution_time');
+            set_time_limit(config('timeout.file_upload', 120));
+
             $this->validate();
             $this->uploadInProgress = true;
 
@@ -80,8 +84,8 @@ class DocumentUpload extends Component
                 $fileName = uniqid() . '_' . time() . '.' . $format;
                 $filePath = $this->file->storeAs('documents/original', $fileName, 'private');
 
-                // Créer une prévisualisation
-                $previewPath = $this->createPreview($this->file, $format);
+                // Créer une prévisualisation (avec timeout géré)
+                $previewPath = $this->createPreviewWithTimeout($this->file, $format);
 
                 // Créer le document
                 $document = Document::create([
@@ -99,10 +103,16 @@ class DocumentUpload extends Component
 
                 DB::commit();
 
+                // Vider le cache des filtres
+                cache()->forget('documents_filter_data');
+
                 // Réinitialiser le formulaire
                 $this->reset(['title', 'country', 'description', 'file', 'terms']);
 
                 session()->flash('success', 'Votre document a été soumis avec succès et est en attente de validation.');
+
+                // Restaurer la limite de temps
+                set_time_limit($originalTimeLimit);
 
                 return redirect()->route('documents.my');
 
@@ -125,6 +135,33 @@ class DocumentUpload extends Component
             $this->addError('file', $e->getMessage());
         } finally {
             $this->uploadInProgress = false;
+            // Restaurer la limite de temps en cas d'erreur
+            if (isset($originalTimeLimit)) {
+                set_time_limit($originalTimeLimit);
+            }
+        }
+    }
+
+    /**
+     * Créer une prévisualisation avec gestion du timeout
+     */
+    private function createPreviewWithTimeout($file, $format)
+    {
+        try {
+            // Timeout spécifique pour la création de preview
+            $originalTimeLimit = ini_get('max_execution_time');
+            set_time_limit(config('timeout.image_processing', 30));
+
+            $result = $this->createPreview($file, $format);
+
+            // Restaurer la limite de temps
+            set_time_limit($originalTimeLimit);
+
+            return $result;
+
+        } catch (\Exception $e) {
+            Log::warning('Timeout ou erreur lors de la création de preview: ' . $e->getMessage());
+            return $this->getGenericPreview($format);
         }
     }
 
