@@ -75,6 +75,8 @@ class User extends Authenticatable
                     ->withPivot('downloaded_at');
     }
 
+ 
+
     /**
      * Get the ratings submitted by the user.
      */

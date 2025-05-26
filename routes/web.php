@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,10 @@ Route::get('/contact', function() {
     return view('contact');
 })->name('contact');
 
+// Routes de langue
+Route::post('/language/switch', [LanguageController::class, 'switch'])->name('language.switch');
+Route::get('/language/available', [LanguageController::class, 'getAvailableLocales'])->name('language.available');
+
 // Routes Documents (attention à l'ordre des routes)
 Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
 
@@ -31,16 +36,16 @@ Route::middleware(['auth'])->group(function () {
     // Profil utilisateur
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    
+
     // Gestion des documents
     Route::get('/documents/create', [DocumentController::class, 'create'])->name('documents.create');
     Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
     Route::get('/my-documents', [DocumentController::class, 'userDocuments'])->name('documents.my');
     Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
-    
+
     // Téléchargement de documents
     Route::post('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
-    
+
     // Notation des documents
     Route::post('/documents/{document}/rate', [DocumentController::class, 'rate'])->name('documents.rate');
 });

@@ -7,9 +7,11 @@ use App\Models\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
+// use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\DB;
 
 class DocumentController extends Controller
+
 {
     /**
      * Display a listing of the documents.
@@ -88,41 +90,70 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'country' => 'required|string|max:100',
-            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx|max:10240', // 10MB max
-            'description' => 'nullable|string',
-            'terms' => 'required|accepted',
-        ]);
+        try {
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'country' => 'required|string|max:100',
+                'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx|max:10240', // 10MB max
+                'description' => 'nullable|string|max:1000',
+                'terms' => 'required|accepted',
+            ]);
 
-        // Déterminer le format et le prix
-        $format = $request->file('file')->getClientOriginalExtension();
-        $price = in_array(strtolower($format), ['doc', 'docx', 'xls', 'xlsx']) ? 2 : 1;
+            // Vérifier la taille du fichier (sécurité supplémentaire)
+            if ($request->file('file')->getSize() > 10485760) { // 10MB en bytes
+                return back()->withErrors(['file' => 'Le fichier ne peut pas dépasser 10MB.'])->withInput();
+            }
 
-        // Sauvegarder le fichier
-        $filePath = $request->file('file')->store('documents/original', 'private');
+            // Déterminer le format et le prix
+            $format = strtolower($request->file('file')->getClientOriginalExtension());
+            $price = in_array($format, ['doc', 'docx', 'xls', 'xlsx']) ? 2 : 1;
 
-        // Créer une prévisualisation
-        $previewPath = $this->createPreview($request->file('file'), $format);
+            // Utiliser une transaction pour assurer la cohérence
+            DB::beginTransaction();
 
-        // Créer le document
-        $document = new Document([
-            'user_id' => Auth::id(),
-            'title' => $request->input('title'),
-            'country' => $request->input('country'),
-            'format' => $format,
-            'description' => $request->input('description'),
-            'price' => $price,
-            'file_path' => $filePath,
-            'preview_path' => $previewPath,
-            'is_verified' => false, // À valider par un modérateur
-            'downloads' => 0,
-        ]);
+            try {
+                // Sauvegarder le fichier avec un nom sécurisé
+                $fileName = uniqid() . '_' . time() . '.' . $format;
+                $filePath = $request->file('file')->storeAs('documents/original', $fileName, 'private');
 
-        $document->save();
+                // Créer une prévisualisation
+                $previewPath = $this->createPreview($request->file('file'), $format);
 
-        return redirect()->route('documents.my')->with('success', 'Votre document a été soumis avec succès et est en attente de validation.');
+                // Créer le document
+                $document = Document::create([
+                    'user_id' => Auth::id(),
+                    'title' => $request->input('title'),
+                    'country' => $request->input('country'),
+                    'format' => $format,
+                    'description' => $request->input('description'),
+                    'price' => $price,
+                    'file_path' => $filePath,
+                    'preview_path' => $previewPath,
+                    'is_verified' => false, // À valider par un modérateur
+                    'downloads' => 0,
+                ]);
+
+                DB::commit();
+
+                return redirect()->route('documents.my')->with('success', 'Votre document a été soumis avec succès et est en attente de validation.');
+
+            } catch (\Exception $e) {
+                DB::rollback();
+
+                // Supprimer le fichier si il a été uploadé
+                if (isset($filePath) && Storage::disk('private')->exists($filePath)) {
+                    Storage::disk('private')->delete($filePath);
+                }
+
+                throw $e;
+            }
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            \Log::error('Erreur lors de l\'upload du document: ' . $e->getMessage());
+            return back()->withErrors(['file' => 'Une erreur est survenue lors de l\'upload. Veuillez réessayer.'])->withInput();
+        }
     }
 
     /**
@@ -138,7 +169,7 @@ class DocumentController extends Controller
         // Récupérer les avis
         $ratings = $document->ratings()->with('user')->latest()->limit(5)->get();
         $averageRating = $document->getAverageRatingAttribute();
-        
+
         return view('documents.show', compact('document', 'ratings', 'averageRating'));
     }
 
@@ -149,7 +180,7 @@ class DocumentController extends Controller
     {
         $uploadedDocuments = Auth::user()->uploadedDocuments()->latest()->get();
         $downloadedDocuments = Auth::user()->downloadedDocuments()->latest()->get();
-        
+
         return view('documents.my', compact('uploadedDocuments', 'downloadedDocuments'));
     }
 
@@ -241,7 +272,7 @@ class DocumentController extends Controller
         if (Storage::disk('private')->exists($document->file_path)) {
             Storage::disk('private')->delete($document->file_path);
         }
-        
+
         if ($document->preview_path && Storage::disk('public')->exists($document->preview_path)) {
             Storage::disk('public')->delete($document->preview_path);
         }
@@ -257,40 +288,111 @@ class DocumentController extends Controller
     private function createPreview($file, $format)
     {
         $previewPath = null;
-        
+
         try {
-            // Pour les PDF, créer une image de prévisualisation de la première page
+            // Pour les PDF, essayer de créer une image de prévisualisation
             if (strtolower($format) === 'pdf') {
-                // Utiliser Intervention\Image v3
-                $manager = new \Intervention\Image\ImageManager(
-                    new \Intervention\Image\Drivers\Gd\Driver()
-                );
-                $image = $manager->read($file->path());
-                $image = $image->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
-                
-                $previewPath = 'documents/previews/' . uniqid() . '.jpg';
-                Storage::disk('public')->put($previewPath, (string) $image->encodeByExtension('jpg'));
+                // Vérifier si Imagick est disponible pour les PDF
+                if (extension_loaded('imagick')) {
+                    try {
+                        $imagick = new \Imagick();
+                        $imagick->readImage($file->path() . '[0]'); // Première page
+                        $imagick->setImageFormat('jpeg');
+                        $imagick->setImageCompressionQuality(80);
+                        $imagick->resizeImage(800, 0, \Imagick::FILTER_LANCZOS, 1);
+
+                        $previewPath = 'documents/previews/' . uniqid() . '.jpg';
+                        Storage::disk('public')->put($previewPath, $imagick->getImageBlob());
+                        $imagick->clear();
+                        $imagick->destroy();
+                    } catch (\Exception $e) {
+                        \Log::warning('Erreur Imagick pour PDF: ' . $e->getMessage());
+                        $previewPath = $this->getGenericPreview($format);
+                    }
+                } else {
+                    // Imagick non disponible, utiliser une image générique
+                    $previewPath = $this->getGenericPreview($format);
+                }
             }
             // Pour les autres formats, utiliser une image générique
             else {
-                // Vérifier si l'image générique existe
-                $genericPath = 'documents/previews/generic-' . strtolower($format) . '.jpg';
-                if (Storage::disk('public')->exists($genericPath)) {
-                    $previewPath = $genericPath;
-                } else {
-                    // Utiliser une image générique par défaut
-                    $previewPath = 'documents/previews/generic.jpg';
-                }
+                $previewPath = $this->getGenericPreview($format);
             }
         } catch (\Exception $e) {
             // En cas d'erreur, utiliser une image générique
             \Log::error('Erreur lors de la création de la prévisualisation: ' . $e->getMessage());
-            $previewPath = 'documents/previews/generic.jpg';
+            $previewPath = $this->getGenericPreview($format);
         }
-        
+
         return $previewPath;
+    }
+
+    /**
+     * Get generic preview image for a file format.
+     */
+    private function getGenericPreview($format)
+    {
+        // Créer le répertoire de previews s'il n'existe pas
+        if (!Storage::disk('public')->exists('documents/previews')) {
+            Storage::disk('public')->makeDirectory('documents/previews');
+        }
+
+        // Vérifier si l'image générique spécifique existe
+        $genericPath = 'documents/previews/generic-' . strtolower($format) . '.jpg';
+        if (Storage::disk('public')->exists($genericPath)) {
+            return $genericPath;
+        }
+
+        // Créer une image générique simple si elle n'existe pas
+        $defaultPath = 'documents/previews/generic-' . strtolower($format) . '.jpg';
+        $this->createGenericImage($format, $defaultPath);
+
+        return $defaultPath;
+    }
+
+    /**
+     * Create a simple generic preview image.
+     */
+    private function createGenericImage($format, $path)
+    {
+        try {
+            // Créer une image simple avec GD
+            $width = 400;
+            $height = 300;
+            $image = imagecreate($width, $height);
+
+            // Couleurs
+            $backgroundColor = imagecolorallocate($image, 240, 240, 240);
+            $textColor = imagecolorallocate($image, 100, 100, 100);
+            $borderColor = imagecolorallocate($image, 200, 200, 200);
+
+            // Fond
+            imagefill($image, 0, 0, $backgroundColor);
+
+            // Bordure
+            imagerectangle($image, 0, 0, $width-1, $height-1, $borderColor);
+
+            // Texte
+            $text = strtoupper($format);
+            $fontSize = 5;
+            $textWidth = imagefontwidth($fontSize) * strlen($text);
+            $textHeight = imagefontheight($fontSize);
+            $x = ($width - $textWidth) / 2;
+            $y = ($height - $textHeight) / 2;
+
+            imagestring($image, $fontSize, $x, $y, $text, $textColor);
+
+            // Sauvegarder
+            ob_start();
+            imagejpeg($image, null, 80);
+            $imageData = ob_get_contents();
+            ob_end_clean();
+
+            Storage::disk('public')->put($path, $imageData);
+
+            imagedestroy($image);
+        } catch (\Exception $e) {
+            \Log::error('Erreur lors de la création de l\'image générique: ' . $e->getMessage());
+        }
     }
 }
