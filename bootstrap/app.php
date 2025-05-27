@@ -14,9 +14,17 @@ return Application::configure(basePath: dirname(__DIR__))
         // Enregistrement des middlewares personnalisés
         $middleware->alias([
             'admin' => \App\Http\Middleware\IsAdmin::class,
-            'timeout' => \App\Http\Middleware\SetTimeoutLimits::class,
+            'locale' => \App\Http\Middleware\SetLocale::class,
+        ]);
+
+        // Appliquer le middleware de langue globalement
+        $middleware->web(append: [
+            \App\Http\Middleware\SetLocale::class,
         ]);
     })
+    ->withProviders([
+        App\Providers\LivewireServiceProvider::class,
+    ])
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

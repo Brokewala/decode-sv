@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Default string length for MySQL
         Schema::defaultStringLength(191);
-        
+
         // Register components
         Blade::component('layouts.main', 'main-layout');
         Blade::component('layouts.app', 'app-layout');

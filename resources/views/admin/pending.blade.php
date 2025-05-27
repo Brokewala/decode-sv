@@ -1,8 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Documents en Attente de Validation') }}
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ __('admin.pending.title') }}
+            </h2>
+            <livewire:admin-language-switcher />
+        </div>
     </x-slot>
 
     <div class="py-12">
@@ -32,8 +35,8 @@
                     <form method="GET" action="{{ route('admin.pending') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div>
                             <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Recherche</label>
-                            <input type="text" name="search" id="search" value="{{ request('search') }}" 
-                                   placeholder="Titre, pays, description..." 
+                            <input type="text" name="search" id="search" value="{{ request('search') }}"
+                                   placeholder="Titre, pays, description..."
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                         </div>
 
@@ -77,8 +80,8 @@
                                                 <!-- Prévisualisation -->
                                                 <div class="flex-shrink-0">
                                                     @if($document->preview_path)
-                                                        <img src="{{ asset('storage/' . $document->preview_path) }}" 
-                                                             alt="Prévisualisation" 
+                                                        <img src="{{ asset('storage/' . $document->preview_path) }}"
+                                                             alt="Prévisualisation"
                                                              class="w-16 h-20 object-cover rounded border">
                                                     @else
                                                         <div class="w-16 h-20 bg-gray-200 dark:bg-gray-600 rounded border flex items-center justify-center">
@@ -114,7 +117,7 @@
                                                             <span class="font-medium">Soumis le:</span> {{ $document->created_at->format('d/m/Y à H:i') }}
                                                         </p>
                                                     </div>
-                                                    
+
                                                     @if($document->description)
                                                         <div class="mt-3">
                                                             <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Description:</p>
@@ -131,7 +134,7 @@
                                                 <!-- Bouton Valider -->
                                                 <form method="POST" action="{{ route('admin.verify', $document) }}" class="inline">
                                                     @csrf
-                                                    <button type="submit" 
+                                                    <button type="submit"
                                                             onclick="return confirm('Êtes-vous sûr de vouloir valider ce document ? {{ $document->price }} point(s) seront attribués à {{ $document->user->name }}.')"
                                                             class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm">
                                                         ✅ Valider
@@ -142,7 +145,7 @@
                                                 <form method="POST" action="{{ route('admin.reject', $document) }}" class="inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" 
+                                                    <button type="submit"
                                                             onclick="return confirm('Êtes-vous sûr de vouloir rejeter et supprimer ce document ? Cette action est irréversible.')"
                                                             class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm">
                                                         ❌ Rejeter

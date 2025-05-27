@@ -40,21 +40,23 @@
                     </div>
                     <nav class="items-center hidden sm:ml-6 sm:flex sm:space-x-4">
                         <a href="{{ route('home') }}" class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('home') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">
-                        Accueil
+                        {{ __('common.home') }}
                         </a>
                         <a href="{{ route('documents.index') }}" class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('documents.index') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">
-
-                        Catalogue
+                        {{ __('common.documents') }}
                         </a>
                         <a href="{{ route('documents.create') }}" class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('documents.create') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">
-
-                        Soumettre un document
+                        {{ __('common.upload') }}
                         </a>
                     </nav>
                 </div>
 
                 <!-- Actions utilisateur -->
                 <div class="flex items-center space-x-3">
+                    <!-- Sélecteur de langue global -->
+                    <div class="hidden sm:block">
+                        @include('components.language-switcher')
+                    </div>
 
                     @auth
                         <!-- Indicateur de points -->
@@ -84,31 +86,26 @@
                                  x-transition:leave-end="transform opacity-0 scale-95"
                                  class="absolute right-0 w-48 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg dark:bg-dark-surface ring-1 ring-black ring-opacity-5 dark:divide-dark-border">
                                 <div class="py-1">
-                                    <a href="{{ route('documents.my') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-surface">
-                                        Mes documents
-                                    </a>
-                                    <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-surface">
-                                        Mon profil
-                                    </a>
+                                    <a href="{{ route('documents.my') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-surface">/\s+{{ __('common.nav.my_documents') }}\s+/</a>
+                                    <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-surface">/\s+{{ __('common.nav.profile') }}\s+/</a>
                                 </div>
                                 <div class="py-1">
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
-                                        <button type="submit" class="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-surface">
-                                            Déconnexion
-                                        </button>
+                                        <button type="submit" class="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-surface">/\s+{{ __('common.nav.logout') }}\s+/</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-primary-600 dark:hover:text-dark-accent">
-                            Connexion
-                        </a>
-                        <a href="{{ route('register') }}" class="px-4 py-2 text-sm font-medium text-white rounded-md bg-primary-600 dark:bg-dark-button hover:bg-primary-700 dark:hover:bg-dark-buttonHover">
-                            Inscription
-                        </a>
+                        <a href="{{ route('login') }}" class="px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-primary-600 dark:hover:text-dark-accent">/\s+{{ __('common.nav.login') }}\s+/</a>
+                        <a href="{{ route('register') }}" class="px-4 py-2 text-sm font-medium text-white rounded-md bg-primary-600 dark:bg-dark-button hover:bg-primary-700 dark:hover:bg-dark-buttonHover">/\s+{{ __('common.nav.register') }}\s+/</a>
                     @endauth
+
+                    <!-- Sélecteur de langue mobile -->
+                    <div class="sm:hidden">
+                        @include('components.language-switcher-compact')
+                    </div>
 
                     <!-- Menu mobile (hamburger) -->
                     <div class="flex sm:hidden">
@@ -124,36 +121,20 @@
             <!-- Menu mobile -->
             <div class="hidden sm:hidden" id="mobile-menu">
                 <div class="px-2 pt-2 pb-3 space-y-1">
-                    <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('home') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">
-                        Accueil
-                    </a>
-                    <a href="{{ route('documents.index') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('documents.index') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">
-                        Catalogue
-                    </a>
-                    <a href="{{ route('documents.create') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('documents.create') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">
-                        Déposer un document
-                    </a>
+                    <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('home') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">/\s+{{ __('common.nav.home') }}\s+/</a>
+                    <a href="{{ route('documents.index') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('documents.index') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">/\s+{{ __('common.nav.documents') }}\s+/</a>
+                    <a href="{{ route('documents.create') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('documents.create') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">/\s+{{ __('common.nav.upload') }}\s+/</a>
 
                     @auth
-                        <a href="{{ route('documents.my') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('documents.my') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">
-                            Mes documents
-                        </a>
-                        <a href="{{ route('profile.edit') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('profile.edit') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">
-                            Mon profil
-                        </a>
+                        <a href="{{ route('documents.my') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('documents.my') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">/\s+{{ __('common.nav.my_documents') }}\s+/</a>
+                        <a href="{{ route('profile.edit') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('profile.edit') ? 'text-primary-700 dark:text-dark-accent bg-primary-50 dark:bg-dark-surface' : 'text-gray-500 dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface' }}">/\s+{{ __('common.nav.profile') }}\s+/</a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="block w-full px-3 py-2 text-base font-medium text-left text-gray-500 rounded-md dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface">
-                                Déconnexion
-                            </button>
+                            <button type="submit" class="block w-full px-3 py-2 text-base font-medium text-left text-gray-500 rounded-md dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface">/\s+{{ __('common.nav.logout') }}\s+/</button>
                         </form>
                     @else
-                        <a href="{{ route('login') }}" class="block px-3 py-2 text-base font-medium text-gray-500 rounded-md dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface">
-                            Connexion
-                        </a>
-                        <a href="{{ route('register') }}" class="block px-3 py-2 text-base font-medium text-gray-500 rounded-md dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface">
-                            Inscription
-                        </a>
+                        <a href="{{ route('login') }}" class="block px-3 py-2 text-base font-medium text-gray-500 rounded-md dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface">/\s+{{ __('common.nav.login') }}\s+/</a>
+                        <a href="{{ route('register') }}" class="block px-3 py-2 text-base font-medium text-gray-500 rounded-md dark:text-gray-300 hover:text-primary-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-dark-surface">/\s+{{ __('common.nav.register') }}\s+/</a>
                     @endauth
                 </div>
             </div>
@@ -214,44 +195,34 @@
                         <span class="text-primary-600 dark:text-dark-accent">Decode</span>SV
                     </h2>
                     <p class="mb-4 text-gray-600 dark:text-gray-400">
-                        Plateforme d'échange de formats de documents pour traducteurs du monde entier.
-                        Réduisez le temps consacré au reformatage et concentrez-vous sur votre cœur de métier.
+                        {{ __('common.footer.description') }}
+                        {{ __('common.footer.subtitle') }}
                     </p>
                 </div>
 
                 <div>
-                    <h3 class="mb-4 text-sm font-semibold tracking-wider text-gray-600 uppercase dark:text-gray-400">Navigation</h3>
+                    <h3 class="mb-4 text-sm font-semibold tracking-wider text-gray-600 uppercase dark:text-gray-400">{{ __('common.footer.navigation') }}</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="{{ route('home') }}" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-dark-accent">
-                                Accueil
-                            </a>
+                            <a href="{{ route('home') }}" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-dark-accent">{{ __('common.nav.home') }}</a>
                         </li>
                         <li>
-                            <a href="{{ route('documents.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-dark-accent">
-                                Catalogue
-                            </a>
+                            <a href="{{ route('documents.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-dark-accent">{{ __('common.nav.documents') }}</a>
                         </li>
                         <li>
-                            <a href="{{ route('documents.create') }}" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-dark-accent">
-                                Déposer un document
-                            </a>
+                            <a href="{{ route('documents.create') }}" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-dark-accent">{{ __('common.nav.upload') }}</a>
                         </li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 class="mb-4 text-sm font-semibold tracking-wider text-gray-600 uppercase dark:text-gray-400">Contact</h3>
+                    <h3 class="mb-4 text-sm font-semibold tracking-wider text-gray-600 uppercase dark:text-gray-400">{{ __('common.footer.contact') }}</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-dark-accent">
-                                À propos
-                            </a>
+                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-dark-accent">{{ __('common.footer.about') }}</a>
                         </li>
                         <li>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-dark-accent">
-                                Mentions légales
-                            </a>
+                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-dark-accent">{{ __('common.footer.legal') }}</a>
                         </li>
                         <li>
                             <a href="mailto:contact@decode-sv.com" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-dark-accent">
@@ -264,7 +235,7 @@
 
             <div class="flex flex-col pt-8 mt-8 border-t border-gray-200 dark:border-dark-border md:flex-row md:justify-between md:items-center">
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                    &copy; {{ date('Y') }} Decode SV. Tous droits réservés.
+                    &copy; {{ date('Y') }} Decode SV. {{ __('common.footer.copyright') }}
                 </p>
                 <div class="flex mt-4 space-x-6 md:mt-0">
                     <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-dark-accent">

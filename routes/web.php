@@ -29,6 +29,11 @@ Route::get('/contact', function() {
 Route::post('/language/switch', [LanguageController::class, 'switch'])->name('language.switch');
 Route::get('/language/available', [LanguageController::class, 'getAvailableLocales'])->name('language.available');
 
+// Routes Livewire (support GET et POST pour compatibilité)
+Route::match(['GET', 'POST'], '/livewire/update', function() {
+    return app(\Livewire\Mechanisms\HandleRequests\HandleRequests::class)->handleUpdate();
+})->middleware(['web']);
+
 // Routes Documents (attention à l'ordre des routes)
 Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
 

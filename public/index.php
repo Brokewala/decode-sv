@@ -1,5 +1,9 @@
 <?php
 
+// Augmenter le temps d'exécution et la mémoire pour éviter les timeouts
+ini_set('max_execution_time', 300);
+ini_set('memory_limit', '512M');
+
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 

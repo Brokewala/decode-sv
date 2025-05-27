@@ -1,8 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Gestion des Utilisateurs') }}
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ __('admin.users.title') }}
+            </h2>
+            <livewire:admin-language-switcher />
+        </div>
     </x-slot>
 
     <div class="py-12">
@@ -26,8 +29,8 @@
                     <form method="GET" action="{{ route('admin.users') }}" class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Recherche</label>
-                            <input type="text" name="search" id="search" value="{{ request('search') }}" 
-                                   placeholder="Nom ou email..." 
+                            <input type="text" name="search" id="search" value="{{ request('search') }}"
+                                   placeholder="Nom ou email..."
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                         </div>
 
@@ -125,13 +128,13 @@
                                                     <form method="POST" action="{{ route('admin.toggle-admin', $user) }}" class="inline">
                                                         @csrf
                                                         @if($user->is_admin)
-                                                            <button type="submit" 
+                                                            <button type="submit"
                                                                     onclick="return confirm('Êtes-vous sûr de vouloir retirer les droits d\'administrateur à {{ $user->name }} ?')"
                                                                     class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
                                                                 Retirer admin
                                                             </button>
                                                         @else
-                                                            <button type="submit" 
+                                                            <button type="submit"
                                                                     onclick="return confirm('Êtes-vous sûr de vouloir promouvoir {{ $user->name }} en administrateur ?')"
                                                                     class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
                                                                 Promouvoir admin

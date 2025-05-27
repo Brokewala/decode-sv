@@ -3,21 +3,24 @@
         <div class="flex justify-between items-center">
             <div>
                 <h2 class="font-bold text-2xl text-gray-900 dark:text-white leading-tight">
-                    🏢 Centre d'Administration
+                    🏢 {{ __('admin.dashboard.title') }}
                 </h2>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    Tableau de bord exécutif - {{ now()->format('d/m/Y à H:i') }}
+                    {{ __('admin.dashboard.subtitle', ['date' => now()->format(app()->getLocale() === 'fr' ? 'd/m/Y à H:i' : 'm/d/Y at H:i')]) }}
                 </p>
             </div>
             <div class="flex items-center space-x-4">
+                <!-- Sélecteur de langue -->
+                <livewire:admin-language-switcher />
+
                 <div class="bg-green-100 dark:bg-green-900 px-3 py-1 rounded-full">
                     <span class="text-green-800 dark:text-green-200 text-sm font-medium">
-                        🟢 Système Opérationnel
+                        🟢 {{ __('admin.dashboard.system_status') }}
                     </span>
                 </div>
                 <div class="text-right">
                     <p class="text-sm font-medium text-gray-900 dark:text-white">{{ auth()->user()->name }}</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">Administrateur Principal</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('admin.dashboard.principal_admin') }}</p>
                 </div>
             </div>
         </div>
@@ -45,9 +48,9 @@
                     <div class="p-6">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-semibold text-blue-600 dark:text-blue-300 uppercase tracking-wide">Communauté</p>
+                                <p class="text-sm font-semibold text-blue-600 dark:text-blue-300 uppercase tracking-wide">{{ __('admin.metrics.community') }}</p>
                                 <p class="text-3xl font-bold text-blue-900 dark:text-white mt-2">{{ number_format($totalUsers) }}</p>
-                                <p class="text-sm text-blue-700 dark:text-blue-200 mt-1">Utilisateurs actifs</p>
+                                <p class="text-sm text-blue-700 dark:text-blue-200 mt-1">{{ __('admin.metrics.active_users') }}</p>
                             </div>
                             <div class="bg-blue-500 p-3 rounded-full">
                                 <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,7 +60,7 @@
                         </div>
                         <div class="mt-4 flex items-center">
                             <span class="text-green-500 text-sm font-medium">↗ +12%</span>
-                            <span class="text-blue-600 dark:text-blue-300 text-sm ml-2">ce mois</span>
+                            <span class="text-blue-600 dark:text-blue-300 text-sm ml-2">{{ __('admin.metrics.this_month') }}</span>
                         </div>
                     </div>
                 </div>

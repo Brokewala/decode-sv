@@ -61,7 +61,7 @@
         <!-- Mise à jour du mot de passe -->
         <div class="bg-white dark:bg-dark-surface rounded-lg shadow-md dark:shadow-lg border border-gray-200 dark:border-dark-border overflow-hidden mb-6">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-dark-border">
-                <h2 class="text-lg font-medium text-gray-900 dark:text-white">Mot de passe</h2>
+                <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ __('public.auth.password') }}</h2>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Assurez-vous que votre compte utilise un mot de passe sécurisé.
                 </p>
