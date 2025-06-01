@@ -109,6 +109,27 @@ return [
         'oldest' => 'Plus anciens',
         'most_downloaded' => 'Plus téléchargés',
         'alphabetical' => 'Alphabétique',
+
+        // Page "Mes documents" - nouvelles traductions
+        'manage_documents_description' => 'Gérez les documents que vous avez déposés et téléchargés.',
+        'uploaded_documents' => 'Documents déposés',
+        'downloaded_documents' => 'Documents téléchargés',
+        'no_uploaded_documents' => 'Vous n\'avez pas encore déposé de documents.',
+        'no_downloaded_documents' => 'Vous n\'avez pas encore téléchargé de documents.',
+        'upload_first_document' => 'Déposer votre premier document',
+        'browse_catalog' => 'Parcourir le catalogue',
+        'document' => 'Document',
+        'format' => 'Format',
+        'country' => 'Pays',
+        'price' => 'Prix',
+        'price_paid' => 'Prix payé',
+        'status' => 'Statut',
+        'downloads' => 'Téléchargements',
+        'actions' => 'Actions',
+        'downloaded_at' => 'Téléchargé le',
+        'unknown_date' => 'Date inconnue',
+        'confirm_delete' => 'Êtes-vous sûr de vouloir supprimer ce document ?',
+        'pending' => 'En attente',
     ],
 
     // Profil utilisateur

@@ -97,6 +97,27 @@ return [
         'oldest' => 'Oldest',
         'most_downloaded' => 'Most downloaded',
         'alphabetical' => 'Alphabetical',
+
+        // "My documents" page - new translations
+        'manage_documents_description' => 'Manage the documents you have uploaded and downloaded.',
+        'uploaded_documents' => 'Uploaded documents',
+        'downloaded_documents' => 'Downloaded documents',
+        'no_uploaded_documents' => 'You haven\'t uploaded any documents yet.',
+        'no_downloaded_documents' => 'You haven\'t downloaded any documents yet.',
+        'upload_first_document' => 'Upload your first document',
+        'browse_catalog' => 'Browse catalog',
+        'document' => 'Document',
+        'format' => 'Format',
+        'country' => 'Country',
+        'price' => 'Price',
+        'price_paid' => 'Price paid',
+        'status' => 'Status',
+        'downloads' => 'Downloads',
+        'actions' => 'Actions',
+        'downloaded_at' => 'Downloaded on',
+        'unknown_date' => 'Unknown date',
+        'confirm_delete' => 'Are you sure you want to delete this document?',
+        'pending' => 'Pending',
     ],
 
     // User profile
