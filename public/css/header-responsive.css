@@ -1,0 +1,368 @@
+/* Header Responsive Improvements */
+
+/* Assurer que le header reste fixe et responsive */
+.header-container {
+    position: relative;
+    z-index: 40;
+}
+
+/* Améliorer l'espacement sur mobile */
+@media (max-width: 640px) {
+    .header-container .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    /* Réduire l'espacement entre les éléments sur mobile */
+    .header-actions {
+        gap: 0.5rem;
+    }
+    
+    /* S'assurer que les boutons sont assez grands pour être tactiles */
+    .mobile-button {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Améliorer la visibilité du sélecteur de langue mobile */
+    .language-switcher-link-mobile {
+        min-width: 40px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Améliorer les transitions pour tous les éléments interactifs */
+.header-interactive {
+    transition: all 0.2s ease-in-out;
+}
+
+.header-interactive:hover {
+    transform: translateY(-1px);
+}
+
+/* S'assurer que le menu utilisateur ne déborde pas */
+.user-menu-dropdown {
+    max-width: calc(100vw - 2rem);
+    right: 0;
+}
+
+@media (max-width: 480px) {
+    .user-menu-dropdown {
+        max-width: calc(100vw - 1rem);
+        right: 0.5rem;
+    }
+}
+
+/* Améliorer l'affichage des points sur mobile */
+@media (max-width: 768px) {
+    .points-indicator {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .points-indicator svg {
+        width: 0.75rem;
+        height: 0.75rem;
+    }
+}
+
+/* Assurer que le menu mobile s'affiche correctement */
+.mobile-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dark .mobile-menu {
+    background: var(--dark-surface);
+    border-top-color: var(--dark-border);
+}
+
+/* Améliorer l'accessibilité */
+.focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Header sans scroll - Navigation fluide */
+.header-container {
+    overflow: visible !important;
+}
+
+.header-container * {
+    overflow: visible !important;
+}
+
+/* Navigation principale sans scroll */
+nav {
+    overflow: visible !important;
+}
+
+/* Assurer que tous les éléments du header sont visibles */
+.header-container .flex,
+.header-container .items-center,
+.header-container .space-x-4 {
+    overflow: visible !important;
+}
+
+/* Améliorer l'affichage du logo sur mobile */
+@media (max-width: 640px) {
+    .logo-text {
+        font-size: 1.25rem;
+    }
+}
+
+/* Assurer que les menus déroulants restent visibles */
+.dropdown-menu {
+    z-index: 9999 !important;
+    position: absolute !important;
+}
+
+/* Menu utilisateur - Thème cohérent avec l'application */
+.user-menu-dropdown,
+#user-menu-dropdown {
+    z-index: 9999 !important;
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    margin-top: 0.5rem !important;
+    min-width: 13rem !important;
+    border-radius: 0.5rem !important;
+    background: white !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Mode sombre - Suivre le thème dark de l'application */
+.dark .user-menu-dropdown {
+    background: #1f2937 !important;
+    border: 1px solid #374151 !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Liens du menu - Style cohérent avec le thème */
+.user-menu-dropdown a {
+    display: flex !important;
+    align-items: center !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    transition: all 0.2s ease-in-out !important;
+    text-decoration: none !important;
+}
+
+.user-menu-dropdown a:hover {
+    background: #f3f4f6 !important;
+    color: #1f2937 !important;
+}
+
+/* Mode sombre pour les liens */
+.dark .user-menu-dropdown a {
+    color: #d1d5db !important;
+}
+
+.dark .user-menu-dropdown a:hover {
+    background: #374151 !important;
+    color: #f9fafb !important;
+}
+
+/* Liens avec couleur primaire au hover */
+.user-menu-dropdown a:not(.admin-link):hover {
+    background: #eff6ff !important;
+    color: #2563eb !important;
+}
+
+.dark .user-menu-dropdown a:not(.admin-link):hover {
+    background: #1e3a8a !important;
+    color: #93c5fd !important;
+}
+
+/* Lien admin - Style spécial rouge */
+.user-menu-dropdown .admin-link {
+    color: #dc2626 !important;
+}
+
+.user-menu-dropdown .admin-link:hover {
+    background: #fef2f2 !important;
+    color: #b91c1c !important;
+}
+
+.dark .user-menu-dropdown .admin-link {
+    color: #f87171 !important;
+}
+
+.dark .user-menu-dropdown .admin-link:hover {
+    background: #7f1d1d !important;
+    color: #fca5a5 !important;
+}
+
+/* Bouton de déconnexion */
+.user-menu-dropdown form button {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    background: transparent !important;
+    border: none !important;
+    text-align: left !important;
+    transition: all 0.2s ease-in-out !important;
+    cursor: pointer !important;
+}
+
+.user-menu-dropdown form button:hover {
+    background: #f3f4f6 !important;
+    color: #1f2937 !important;
+}
+
+.dark .user-menu-dropdown form button {
+    color: #d1d5db !important;
+}
+
+.dark .user-menu-dropdown form button:hover {
+    background: #374151 !important;
+    color: #f9fafb !important;
+}
+
+/* Icônes dans le menu */
+.user-menu-dropdown svg {
+    width: 1rem !important;
+    height: 1rem !important;
+    margin-right: 0.75rem !important;
+    flex-shrink: 0 !important;
+}
+
+/* Séparateurs */
+.user-menu-dropdown .divide-y > div:not(:last-child) {
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+.dark .user-menu-dropdown .divide-y > div:not(:last-child) {
+    border-bottom: 1px solid #374151 !important;
+}
+
+/* Menu utilisateur responsive */
+@media (max-width: 640px) {
+    .user-menu-dropdown,
+    #user-menu-dropdown {
+        right: 0.5rem !important;
+        left: 0.5rem !important;
+        width: auto !important;
+        min-width: auto !important;
+    }
+}
+
+/* Animation d'entrée fluide pour le menu utilisateur */
+.user-menu-dropdown {
+    animation: slideInDown 0.2s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Effet de survol sur l'avatar */
+.user-menu-dropdown + div img {
+    transition: all 0.3s ease-in-out;
+}
+
+.user-menu-dropdown + div img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Séparateurs dans le menu */
+.user-menu-dropdown .divide-y > div:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.dark .user-menu-dropdown .divide-y > div:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Améliorer les animations */
+.fade-in {
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.fade-out {
+    animation: fadeOut 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+/* Assurer que les éléments interactifs sont accessibles */
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 0.375rem;
+}
+
+/* Améliorer l'affichage sur très petits écrans */
+@media (max-width: 360px) {
+    .header-container .container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    
+    .header-actions {
+        gap: 0.25rem;
+    }
+    
+    .logo-text {
+        font-size: 1rem;
+    }
+}
+
+/* Assurer que le header ne cause pas de défilement horizontal */
+.header-container {
+    overflow-x: hidden;
+}
+
+.header-container * {
+    box-sizing: border-box;
+}

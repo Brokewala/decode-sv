@@ -27,7 +27,6 @@ class LivewireServiceProvider extends ServiceProvider
         });
 
         // Enregistrement des composants Livewire
-        Livewire::component('global-language-switcher', \App\Livewire\GlobalLanguageSwitcher::class);
-        Livewire::component('admin-language-switcher', \App\Livewire\AdminLanguageSwitcher::class);
+        // Note: Les sélecteurs de langue utilisent maintenant des composants simples sans Livewire
     }
 }
